@@ -84,7 +84,6 @@ public class BrokerService {
 
     private final static String HTTP_GET_SUCCESS_CODE = "0";
 
-    private final static String weEventVersion = "2";
 
 
     public List<BrokerEntity> getBrokers(HttpServletRequest request, String accountId) {
@@ -285,19 +284,6 @@ public class BrokerService {
         if (!HTTP_GET_SUCCESS_CODE.equals(String.valueOf(jsonObject.get("code")))) {
             log.error("url {}, connect fail.", headUrl);
             throw new GovernanceException("url " + headUrl + " connect fail");
-        }
-    }
-
-    public String getVersion(HttpServletRequest request, String brokerUrl) throws GovernanceException {
-        String versionUrl = brokerUrl + ConstantProperties.BROKER_LIST_URL;
-        try {
-            CloseableHttpResponse versionResponse = commonService.getCloseResponse(request, versionUrl);
-            String mes = EntityUtils.toString(versionResponse.getEntity());
-            Map map = JsonHelper.json2Object(mes, Map.class);
-            return map.get("weEventVersion") == null ? null : map.get("weEventVersion").toString();
-        } catch (Exception e) {
-            log.error("get version fail,error:", e);
-            throw new GovernanceException("get version fail,error:{}");
         }
     }
 
